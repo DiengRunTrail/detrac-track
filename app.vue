@@ -36,7 +36,7 @@
       </div>
       <transition name="slide">
         <TopParticipant @close-sidebar="open = false" v-if="open" :locations="locations" @see-location="changeCenterMap"
-          :title="category.split('_')[0] + ' KM'" />
+          :title="category.split('_')[0] + ' KM'" :width="'30vw'" />
       </transition>
     </div>
   </div>
@@ -44,19 +44,37 @@
 
     <div class="nav">
       <img src="/images/logo-white.png" class="logo" />
-      <!-- <div class="nav-category-wrap">
-          <div v-for="(c, i) in categoryOptions" class="nav-category-item" @click="selectCategory(c)" :key="i"
-            :class="{ selected: category == c.value }">
-            {{ c.name }}
-          </div>
-        </div> -->
     </div>
-    <!-- 
-    <div style="height: 80vh; width: 100%">
-      <Map :locations="locations" :loading="loading" :points="points" :zoom="zoom" :center="[-7.267318, 109.959513]" />
-    </div> -->
 
-    <TopParticipant :locations="locations" :title="category.split('_')[0] + ' KM'" />
+    <div class="map-container">
+      <div style="height: 85vh;">
+        <Map :locations="locations" :loading="loading" :points="points" :zoom="zoom" :center="center"
+          :updateCenter="updateCenter" :checkpoints="checkpoints" />
+      </div>
+      <div class="footer">
+        <div>
+          COPYRIGHT © 2024 DETRAC
+        </div>
+        <div>
+          DIENG CALDERA RACE
+        </div>
+        <div>
+          LAST UPDATE: {{ lastUpdate.toLocaleString() }}
+        </div>
+      </div>
+    </div>
+
+    <div class="top-participants-wrap">
+      <div class="holder" @click="open = !open">
+        <div>
+          DETAILS
+        </div>
+      </div>
+      <transition name="slide">
+        <TopParticipant @close-sidebar="open = false" v-if="open" :locations="locations" @see-location="changeCenterMap"
+          :title="category.split('_')[0] + ' KM'" :width="'70vw'" :category="category" :selectCategory="selectCategory" :categoryOptions="categoryOptions" />
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -174,9 +192,9 @@ const loadGpx = async () => {
 useSeoMeta({
   title: 'Live | Dieng Caldera Race',
   ogTitle: 'Live | Dieng Caldera Race',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
-  ogImage: '/images/logo-black.png',
+  description: 'Live tracking Dieng Caldera Race.',
+  ogDescription: 'Live tracking Dieng Caldera Race.',
+  ogImage: '/images/logo-detrac-pat.png',
   twitterCard: 'summary_large_image',
 })
 </script>
@@ -204,7 +222,7 @@ useSeoMeta({
 
 .footer {
   height: 5vh;
-  font-size: 12px;
+  font-size: 10px;
   font-family: 'Roboto', sans-serif;
   background-color: #dfe325;
   text-align: center;

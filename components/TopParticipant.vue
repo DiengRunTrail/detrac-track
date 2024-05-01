@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; align-items: center;">
 
-    <div class="top-participants">
+    <div class="top-participants" :style="{width: width}">
       <h2>Top Participants {{ title }}</h2>
       <hr />
       <div class="participant-container">
@@ -21,6 +21,10 @@
           </div>
         </div>
 
+        <div  v-if="categoryOptions" style="margin-bottom: 20px;">
+
+          <NavWeb :category="category" :selectCategory="selectCategory" :categoryOptions="categoryOptions" />
+        </div>
 
         <div v-if="filteredLocation.length == 0" class="not-found-wrap">
           <div>
@@ -54,7 +58,7 @@
 <script setup>
 import { ref, computed } from "vue"
 
-const props = defineProps(["locations", "title"])
+const props = defineProps(["locations", "title", "width", "category", "selectCategory", "categoryOptions"])
 let searchQuery = ref("")
 let openSortBy = ref(false)
 let sortByQuery = ref({})
@@ -136,7 +140,6 @@ const filteredLocation = computed(() => {
   background-color: rgba(255, 255, 255, 0.9);
   color: #10385b;
   height: 100vh;
-  width: 30vw;
   overflow-y: auto;
 }
 
