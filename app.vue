@@ -14,7 +14,7 @@
     <div class="map-container">
       <div style="height: 85vh;">
         <Map :locations="locations" :loading="loading" :points="points" :zoom="zoom" :center="center"
-          :updateCenter="updateCenter" />
+          :updateCenter="updateCenter" :checkpoints="checkpoints" />
       </div>
       <div class="footer">
         <div>
@@ -71,6 +71,7 @@ import GPXParser from "gpxparser";
 let loading = ref(false);
 let zoom = ref(15);
 let points = ref([]);
+let checkpoints = ref([]);
 let category = ref("10_km");
 let open = ref(false)
 let lastUpdate = ref(new Date())
@@ -102,6 +103,7 @@ onMounted(() => {
 const selectCategory = (cat) => {
   category.value = cat.value
   points.value = []
+  checkpoints.value = []
   loadGpx()
 }
 
@@ -153,6 +155,19 @@ const loadGpx = async () => {
     const longitude = point.lon;
     points.value.push([latitude, longitude]);
   });
+
+  let match;
+  const regexCheckPoints =
+    /<wpt lat="([^"]+)" lon="([^"]+)">\s*<ele>([^<]+)<\/ele>\s*<name>([^<]+)<\/name>/g;
+
+  while ((match = regexCheckPoints.exec(gpxText)) !== null) {
+    console.log(match)
+    checkpoints.value.push({
+      latitude: parseFloat(match[1]),
+      longitude: parseFloat(match[2]),
+      name: match[4],
+    });
+  }
   loading.value = false;
 };
 

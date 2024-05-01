@@ -10,10 +10,13 @@
       name="OpenStreetMap" />
     <LMarker v-for="loc in locations" :lat-lng="[loc.latitude, loc.longitude]" :radius="10">
       <LIcon :icon-size="[30, 30]" icon-url="/images/user.png" />
-      <LPopup>
-        <div style="font-weight: bold; font-size: 16px">
-          {{ loc.fullname }}
-        </div>
+      <LPopup style="font-weight: bold; font-size: 16px">
+        {{ loc.fullname }}
+      </LPopup>
+    </LMarker>
+    <LMarker v-for="loc in checkpoints" :lat-lng="[loc.latitude, loc.longitude]" :radius="10">
+      <LPopup style="font-weight: bold; font-size: 16px">
+        {{ loc.name }}
       </LPopup>
     </LMarker>
     <LPolyline :lat-lngs="points" color="#10385b" :weight="4" />
@@ -23,7 +26,7 @@
 <script setup>
 import { VueSpinnerFacebook } from "vue3-spinners"
 
-defineProps(["locations", "loading", "points", "zoom", "center", "updateCenter"])
+defineProps(["locations", "checkpoints", "loading", "points", "zoom", "center", "updateCenter"])
 </script>
 
 <style scoped>
