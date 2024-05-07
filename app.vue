@@ -102,7 +102,7 @@ const categoryOptions = ref([
   { "name": "75 KM", "value": "75_km" },
 ])
 
-const { data: locations, error, refresh } = await useFetch("/v1/locations", {
+const { data: locations, error, refresh } = await useFetch("/locations", {
   query: {
     category: category
   },
@@ -179,7 +179,6 @@ const loadGpx = async () => {
     /<wpt lat="([^"]+)" lon="([^"]+)">\s*<ele>([^<]+)<\/ele>\s*<name>([^<]+)<\/name>/g;
 
   while ((match = regexCheckPoints.exec(gpxText)) !== null) {
-    console.log(match)
     checkpoints.value.push({
       latitude: parseFloat(match[1]),
       longitude: parseFloat(match[2]),

@@ -43,7 +43,7 @@
           </div>
           <div class="participant-rank-estimated">
             <div>{{ item.category.split("_")[0] }} KM</div>
-            <div>{{ new Date(item.timestamp).toLocaleString() }}</div>
+            <div>{{ new Date(item.updated_at).toLocaleString() }}</div>
           </div>
         </div>
 
@@ -88,7 +88,7 @@ const sortBy = (item) => {
 
 const filteredLocation = computed(() => {
   if (searchQuery.value == "" && sortByQuery.value == {}) {
-    return props.locations
+    return props.locations.data
   }
 
   if (sortByQuery.value != {}) {
@@ -96,15 +96,15 @@ const filteredLocation = computed(() => {
     switch (sortByQuery.value.name) {
       case "Name":
         if (sortByQuery.value.asc) {
-          return props.locations.sort((a, b) => a.fullname.toLowerCase().localeCompare(b.fullname.toLowerCase()))
+          return props.locations.data.sort((a, b) => a.fullname.toLowerCase().localeCompare(b.fullname.toLowerCase()))
         }
-        return props.locations.sort((a, b) => b.fullname.toLowerCase().localeCompare(a.fullname.toLowerCase()))
+        return props.locations.data.sort((a, b) => b.fullname.toLowerCase().localeCompare(a.fullname.toLowerCase()))
 
       case "No Runner":
         if (sortByQuery.value.asc) {
-          return props.locations.sort((a, b) => a.uid.toLowerCase().localeCompare(b.uid.toLowerCase()))
+          return props.locations.data.sort((a, b) => a.uid.toLowerCase().localeCompare(b.uid.toLowerCase()))
         }
-        return props.locations.sort((a, b) => b.uid.toLowerCase().localeCompare(a.uid.toLowerCase()))
+        return props.locations.data.sort((a, b) => b.uid.toLowerCase().localeCompare(a.uid.toLowerCase()))
 
       default:
         break;
@@ -112,7 +112,7 @@ const filteredLocation = computed(() => {
 
   }
 
-  return props.locations.filter((loc) => {
+  return props.locations.data.filter((loc) => {
     let byName = loc.fullname.toLowerCase().includes(searchQuery.value.toLowerCase())
     let byId = loc.uid.toLowerCase().includes(searchQuery.value.toLowerCase())
     return byName || byId
